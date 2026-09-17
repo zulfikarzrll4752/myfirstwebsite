@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zülfikar Zorlu - Portfolyo</title>
+    
+    <!-- Tailwind CSS (Tasarımın bozulmaması için CDN ile eklendi) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Framer Motion Animasyonlarının CSS Karşılıkları */
+        @keyframes float1 {
+            0%, 100% { transform: scale(1) translate(0, 0); }
+            50% { transform: scale(1.25) translate(40px, -30px); }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: scale(1) translate(0, 0); }
+            50% { transform: scale(1.3) translate(-50px, 40px); }
+        }
+        @keyframes float3 {
+            0%, 100% { transform: scale(1) translate(0, 0); }
+            50% { transform: scale(1.2) translate(30px, 30px); }
+        }
+        .bg-blob-1 { animation: float1 18s ease-in-out infinite; }
+        .bg-blob-2 { animation: float2 22s ease-in-out infinite; }
+        .bg-blob-3 { animation: float3 16s ease-in-out infinite; }
+
+        @keyframes introFade {
+            0% { filter: blur(24px); opacity: 0; transform: scale(0.92); }
+            15% { filter: blur(0px); opacity: 1; transform: scale(1); }
+            85% { filter: blur(0px); opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.96); filter: blur(16px); }
+        }
+        .animate-intro {
+            animation: introFade 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.92) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-modal {
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Arka plan grid deseni */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), 
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-[#040406] text-zinc-100 font-sans h-screen w-screen overflow-hidden relative selection:bg-purple-500/30 flex flex-col justify-between p-4 sm:p-6 md:p-8 m-0">
+
+    <!-- Animasyonlu Arka Plan -->
+    <div class="fixed inset-0 z-0 overflow-hidden bg-[#040406] pointer-events-none select-none">
+        <div class="absolute -top-[15%] -left-[10%] w-[55vw] h-[55vw] rounded-full bg-purple-900/15 blur-[140px] bg-blob-1"></div>
+        <div class="absolute top-[35%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-emerald-900/10 blur-[150px] bg-blob-2"></div>
+        <div class="absolute -bottom-[20%] left-[20%] w-[45vw] h-[45vw] rounded-full bg-blue-900/10 blur-[130px] bg-blob-3"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#040406_80%)]"></div>
+        <div class="absolute inset-0 bg-grid-pattern"></div>
+    </div>
+
+    <!-- Intro Ekranı -->
+    <div id="intro-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#040406] animate-intro">
+        <div class="relative mb-6">
+            <div class="w-28 h-28 md:w-32 md:h-32 rounded-full p-1 bg-gradient-to-tr from-purple-500 via-emerald-400 to-blue-500 shadow-[0_0_50px_rgba(168,85,247,0.35)]">
+                <img src="FOTO_2.jpeg" alt="Zülfikar Zorlu" class="w-full h-full object-cover rounded-full bg-zinc-900" onerror="this.style.display='none'; this.parentElement.classList.add('flex', 'items-center', 'justify-center', 'bg-zinc-800');">
+            </div>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-light tracking-tight text-white/90">Zülfikar Zorlu</h1>
+        <p class="text-xs md:text-sm tracking-widest uppercase mt-3 font-mono text-zinc-400">Portföy Yükleniyor</p>
+    </div>
+
+    <!-- Ana İçerik (Başlangıçta gizli, intro bitince JS ile açılacak) -->
+    <div id="main-content" class="hidden relative z-10 h-full w-full max-w-5xl mx-auto flex-col justify-between py-2 sm:py-4 opacity-0 animate-fade-in-up">
+        
+        <!-- Üst Header -->
+        <div class="flex justify-between items-center w-full px-2">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                <span class="text-xs font-mono text-zinc-400 tracking-wider">ONLINE</span>
+            </div>
+            <div class="px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono text-zinc-400 backdrop-blur-md">
+                Bilişim Teknolojileri
+            </div>
+        </div>
+
+        <!-- Profil -->
+        <div class="flex flex-col items-center justify-center text-center my-auto mt-[8vh]">
+            <div class="relative group mb-5 cursor-pointer hover:scale-105 transition duration-500">
+                <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-purple-500 via-emerald-400 to-blue-500 opacity-70 blur-md group-hover:opacity-100 transition duration-500 group-hover:blur-lg"></div>
+                <div class="relative w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full p-[3px] bg-zinc-950/80 backdrop-blur-md">
+                    <img src="FOTO_2.jpeg" alt="Zülfikar Zorlu" class="w-full h-full object-cover rounded-full shadow-2xl">
+                </div>
+                <div class="absolute bottom-1 right-1 p-2 rounded-full bg-black/80 border border-white/20 text-emerald-400 shadow-lg backdrop-blur-md">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                </div>
+            </div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-white mb-2">Zülfikar Zorlu</h1>
+            <p class="text-sm sm:text-base md:text-lg text-zinc-400 font-light max-w-md mx-auto">
+                11. Sınıf Bilişim Teknolojileri Öğrencisi & Geliştirici
+            </p>
+        </div>
+
+        <!-- Menü Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 w-full mt-auto mb-2">
+            
+            <!-- Hakkımda -->
+            <button onclick="openModal('about')" class="relative overflow-hidden p-4 sm:p-5 md:p-6 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] backdrop-blur-xl border border-white/10 flex flex-col items-start justify-between text-left group transition-all duration-300 shadow-xl shadow-black/40 h-32 sm:h-36 md:h-40 hover:-translate-y-1 hover:scale-[1.03]">
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="relative z-10 w-full flex justify-between items-center">
+                    <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
+                        <i data-lucide="user" class="w-5 h-5 sm:w-6 sm:h-6 text-zinc-300 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <i data-lucide="chevron-left" class="w-4 h-4 text-zinc-600 rotate-180 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
+                </div>
+                <div class="relative z-10 mt-4">
+                    <h3 class="text-sm sm:text-base font-medium text-zinc-200 group-hover:text-white transition-colors">Hakkımda</h3>
+                    <p class="text-[11px] sm:text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors line-clamp-1 mt-0.5 font-light">Kişisel Özet & Misyon</p>
+                </div>
+            </button>
+
+            <!-- Hobiler -->
+            <button onclick="openModal('hobbies')" class="relative overflow-hidden p-4 sm:p-5 md:p-6 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] backdrop-blur-xl border border-white/10 flex flex-col items-start justify-between text-left group transition-all duration-300 shadow-xl shadow-black/40 h-32 sm:h-36 md:h-40 hover:-translate-y-1 hover:scale-[1.03]">
+                <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-teal-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="relative z-10 w-full flex justify-between items-center">
+                    <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
+                        <i data-lucide="code" class="w-5 h-5 sm:w-6 sm:h-6 text-zinc-300 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <i data-lucide="chevron-left" class="w-4 h-4 text-zinc-600 rotate-180 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
+                </div>
+                <div class="relative z-10 mt-4">
+                    <h3 class="text-sm sm:text-base font-medium text-zinc-200 group-hover:text-white transition-colors">Hobiler & İlgi Alanları</h3>
+                    <p class="text-[11px] sm:text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors line-clamp-1 mt-0.5 font-light">Boş Zamanlar & Tutkular</p>
+                </div>
+            </button>
+
+            <!-- Eğitim -->
+            <button onclick="openModal('education')" class="relative overflow-hidden p-4 sm:p-5 md:p-6 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] backdrop-blur-xl border border-white/10 flex flex-col items-start justify-between text-left group transition-all duration-300 shadow-xl shadow-black/40 h-32 sm:h-36 md:h-40 hover:-translate-y-1 hover:scale-[1.03]">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="relative z-10 w-full flex justify-between items-center">
+                    <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
+                        <i data-lucide="graduation-cap" class="w-5 h-5 sm:w-6 sm:h-6 text-zinc-300 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <i data-lucide="chevron-left" class="w-4 h-4 text-zinc-600 rotate-180 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
+                </div>
+                <div class="relative z-10 mt-4">
+                    <h3 class="text-sm sm:text-base font-medium text-zinc-200 group-hover:text-white transition-colors">Eğitim</h3>
+                    <p class="text-[11px] sm:text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors line-clamp-1 mt-0.5 font-light">Akademik Yolculuk</p>
+                </div>
+            </button>
+
+            <!-- İletişim -->
+            <button onclick="openModal('contact')" class="relative overflow-hidden p-4 sm:p-5 md:p-6 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] backdrop-blur-xl border border-white/10 flex flex-col items-start justify-between text-left group transition-all duration-300 shadow-xl shadow-black/40 h-32 sm:h-36 md:h-40 hover:-translate-y-1 hover:scale-[1.03]">
+                <div class="absolute inset-0 bg-gradient-to-br from-pink-500/20 via-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="relative z-10 w-full flex justify-between items-center">
+                    <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
+                        <i data-lucide="phone" class="w-5 h-5 sm:w-6 sm:h-6 text-zinc-300 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <i data-lucide="chevron-left" class="w-4 h-4 text-zinc-600 rotate-180 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
+                </div>
+                <div class="relative z-10 mt-4">
+                    <h3 class="text-sm sm:text-base font-medium text-zinc-200 group-hover:text-white transition-colors">İletişim</h3>
+                    <p class="text-[11px] sm:text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors line-clamp-1 mt-0.5 font-light">Bana Ulaşın</p>
+                </div>
+            </button>
+        </div>
+
+        <div class="text-center text-[11px] text-zinc-600 font-mono tracking-wider py-1 mt-2">
+            © <script>document.write(new Date().getFullYear())</script> ZÜLFİKAR ZORLU — PORTFOLIO
+        </div>
+    </div>
+
+    <!-- Modals Overlay -->
+    <div id="modal-overlay" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 backdrop-blur-2xl bg-black/70 transition-opacity" onclick="closeModal()">
+        
+        <!-- Modal Container -->
+        <div class="relative w-full max-w-xl bg-[#0d0d12] border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl overflow-hidden text-zinc-100 animate-modal" onclick="event.stopPropagation()">
+            
+            <!-- Kapatma Butonu -->
+            <button onclick="closeModal()" class="absolute top-5 right-5 p-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-400 hover:text-white transition-all duration-200 z-20">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- 1. HAKKIMDA İÇERİĞİ -->
+            <div id="modal-content-about" class="modal-content hidden">
+                <div class="absolute -top-24 -right-24 w-60 h-60 rounded-full blur-[90px] pointer-events-none opacity-40 bg-[rgba(168,85,247,0.25)]"></div>
+                <div class="flex items-center gap-4 mb-6 relative z-10">
+                    <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                        <i data-lucide="user" class="w-6 h-6 text-white" stroke-width="1.75"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-white">Hakkımda</h2>
+                        <p class="text-xs sm:text-sm text-zinc-400 font-light">Kişisel Özet & Misyon</p>
+                    </div>
+                </div>
+                <div class="relative z-10 text-zinc-300 space-y-5">
+                    <p class="text-sm sm:text-base leading-relaxed font-light text-zinc-300">
+                        Merhaba! Ben Zülfikar Zorlu. Teknolojiye, yazılım geliştirme süreçlerine ve bilgisayar donanımlarına büyük bir ilgi duyuyorum. Geleceğin teknolojilerini şekillendiren projelerde yer almak için kendimi sürekli geliştiriyor, yeni diller ve sistemler öğreniyorum.
+                    </p>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-wider text-zinc-500 font-mono mb-3">Odak Alanları</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-medium text-zinc-200">Yazılım Geliştirme</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-medium text-zinc-200">PC Donanımı</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-medium text-zinc-200">Problem Çözme</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-medium text-zinc-200">Sürekli Öğrenme</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. HOBİLER İÇERİĞİ -->
+            <div id="modal-content-hobbies" class="modal-content hidden">
+                <div class="absolute -top-24 -right-24 w-60 h-60 rounded-full blur-[90px] pointer-events-none opacity-40 bg-[rgba(16,185,129,0.25)]"></div>
+                <div class="flex items-center gap-4 mb-6 relative z-10">
+                    <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                        <i data-lucide="code" class="w-6 h-6 text-white" stroke-width="1.75"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-white">Hobiler & İlgi Alanları</h2>
+                        <p class="text-xs sm:text-sm text-zinc-400 font-light">Boş Zamanlar & Tutkular</p>
+                    </div>
+                </div>
+                <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 flex items-start gap-3">
+                        <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 mt-0.5"><i data-lucide="code" class="w-4 h-4"></i></div>
+                        <div><h4 class="text-sm font-medium text-white">Yazılım & Kodlama</h4><p class="text-xs text-zinc-400 font-light mt-0.5">Yeni teknolojiler ve projeler geliştirme</p></div>
+                    </div>
+                    <div class="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 flex items-start gap-3">
+                        <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 mt-0.5"><i data-lucide="cpu" class="w-4 h-4"></i></div>
+                        <div><h4 class="text-sm font-medium text-white">PC Donanımı</h4><p class="text-xs text-zinc-400 font-light mt-0.5">Sistem toplama, donanım mimarileri ve performans</p></div>
+                    </div>
+                    <div class="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 flex items-start gap-3">
+                        <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 mt-0.5"><i data-lucide="gamepad-2" class="w-4 h-4"></i></div>
+                        <div><h4 class="text-sm font-medium text-white">Oyunlar</h4><p class="text-xs text-zinc-400 font-light mt-0.5">Bilgisayar ve mobil rekabetçi oyunlar</p></div>
+                    </div>
+                    <div class="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 flex items-start gap-3">
+                        <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 mt-0.5"><i data-lucide="tv" class="w-4 h-4"></i></div>
+                        <div><h4 class="text-sm font-medium text-white">Sosyal Medya & Film</h4><p class="text-xs text-zinc-400 font-light mt-0.5">Sinema, teknoloji içerikleri ve dijital trendler</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. EĞİTİM İÇERİĞİ -->
+            <div id="modal-content-education" class="modal-content hidden">
+                <div class="absolute -top-24 -right-24 w-60 h-60 rounded-full blur-[90px] pointer-events-none opacity-40 bg-[rgba(59,130,246,0.25)]"></div>
+                <div class="flex items-center gap-4 mb-6 relative z-10">
+                    <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                        <i data-lucide="graduation-cap" class="w-6 h-6 text-white" stroke-width="1.75"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-white">Eğitim</h2>
+                        <p class="text-xs sm:text-sm text-zinc-400 font-light">Akademik Yolculuk</p>
+                    </div>
+                </div>
+                <div class="relative z-10 space-y-4">
+                    <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-2">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-base font-semibold text-white">Başakşehir Çok Programlı Anadolu Lisesi</h3>
+                            <span class="px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[11px] font-mono">11. Sınıf Öğrencisi</span>
+                        </div>
+                        <p class="text-sm font-medium text-blue-300">Bilişim Teknolojileri Alanı</p>
+                        <p class="text-xs text-zinc-400 leading-relaxed pt-1">
+                            Bilişim Teknolojileri bölümünde temel programlama, ağ sistemleri, veri tabanları ve donanım mimarileri üzerine eğitim almaktayım.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. İLETİŞİM İÇERİĞİ -->
+            <div id="modal-content-contact" class="modal-content hidden">
+                <div class="absolute -top-24 -right-24 w-60 h-60 rounded-full blur-[90px] pointer-events-none opacity-40 bg-[rgba(236,72,153,0.25)]"></div>
+                <div class="flex items-center gap-4 mb-6 relative z-10">
+                    <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                        <i data-lucide="phone" class="w-6 h-6 text-white" stroke-width="1.75"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-white">İletişim</h2>
+                        <p class="text-xs sm:text-sm text-zinc-400 font-light">Bana Ulaşın</p>
+                    </div>
+                </div>
+                <div class="relative z-10 space-y-4">
+                    <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-zinc-500 font-mono uppercase tracking-wider block mb-1">Telefon Numarası</span>
+                            <span class="text-base sm:text-lg font-mono font-medium text-white">+90 534 467 03 60</span>
+                        </div>
+                        <button onclick="copyPhone()" class="p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white transition-all flex items-center gap-2 text-xs font-medium">
+                            <span id="copy-icon"><i data-lucide="copy" class="w-4 h-4"></i></span>
+                            <span id="copy-text">Kopyala</span>
+                        </button>
+                    </div>
+
+                    <a href="https://wa.me/905344670360" target="_blank" rel="noopener noreferrer" class="w-full p-4 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 hover:text-emerald-200 transition-all flex items-center justify-center gap-3 text-sm font-medium group">
+                        <i data-lucide="message-circle" class="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                        <span>WhatsApp İle İletişime Geç</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-70"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Modal Bottom Footer -->
+            <div class="relative z-10 mt-8 pt-4 border-t border-white/5 flex justify-between items-center text-xs text-zinc-500">
+                <span>ESC veya Dışarıya Tıklayarak Kapatın</span>
+                <button onclick="closeModal()" class="hover:text-zinc-300 transition-colors flex items-center gap-1 font-medium">Geri Dön</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Mantığı (İşlevlerin bozulmaması için saf JS) -->
+    <script>
+        // Lucide İkonlarını Render Et
+        lucide.createIcons();
+
+        // Intro Ekranı Zamanlayıcısı (React'taki 2.4 saniye beklemesi)
+        setTimeout(() => {
+            document.getElementById('intro-screen').style.display = 'none';
+            document.getElementById('main-content').classList.remove('hidden');
+            document.getElementById('main-content').classList.add('flex');
+        }, 2400);
+
+        // Modal (Popup) Açma
+        function openModal(sectionId) {
+            // Arka plan overlay'ini göster
+            document.getElementById('modal-overlay').classList.remove('hidden');
+            
+            // Tüm içerikleri gizle
+            document.querySelectorAll('.modal-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            // Sadece tıklanan içeriği göster
+            document.getElementById('modal-content-' + sectionId).classList.remove('hidden');
+        }
+
+        // Modal Kapatma
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.add('hidden');
+        }
+
+        // ESC Tuşuna basınca modal kapatma
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Telefon numarası kopyalama işlemi
+        function copyPhone() {
+            const phone = '+905344670360';
+            const copyText = document.getElementById('copy-text');
+            const copyIcon = document.getElementById('copy-icon');
+            
+            navigator.clipboard.writeText(phone).then(() => {
+                copyText.innerHTML = '<span class="text-emerald-400">Kopyalandı</span>';
+                copyIcon.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>';
+                lucide.createIcons();
+                
+                setTimeout(() => {
+                    copyText.innerText = 'Kopyala';
+                    copyIcon.innerHTML = '<i data-lucide="copy" class="w-4 h-4"></i>';
+                    lucide.createIcons();
+                }, 2200);
+            });
+        }
+    </script>
+</body>
+</html>
