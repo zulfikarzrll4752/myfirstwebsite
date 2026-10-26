@@ -1,0 +1,20 @@
+```html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Layout 2</title>
+    <link rel="stylesheet" href="layout2.css">
+</head>
+<body>
+
+    <header>Header</header>
+    <nav>Nav</nav>
+    <aside>Left Content</aside>
+    <main>Main Content</main>
+    <section>Right Content</section>
+    <footer>Footer</footer>
+
+</body>
+</html>
+```
